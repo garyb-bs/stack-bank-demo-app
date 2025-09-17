@@ -5,7 +5,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 const API_URL = process.env.NODE_ENV === 'production' 
   ? 'https://your-backend-api.workers.dev/api'  // Replace with your actual backend URL
-  : '${API_URL}';
+  : `${API_URL}`;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -373,7 +373,7 @@ const Profile = ({ userEmail }) => {
   const fetchProfile = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('${API_URL}/profile', {
+      const res = await fetch(`${API_URL}/profile`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       if (res.status === 401) { localStorage.removeItem('token'); navigate('/login', { replace: true }); return; }
@@ -396,7 +396,7 @@ const Profile = ({ userEmail }) => {
     if (!newEmail) return;
     setMessage(''); setError('');
     try {
-      const res = await fetch('${API_URL}/profile', {
+      const res = await fetch(`${API_URL}/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -426,7 +426,7 @@ const Profile = ({ userEmail }) => {
     if (!oldPassword || !newPassword) return;
     setMessage(''); setError('');
     try {
-      const res = await fetch('${API_URL}/profile/password', {
+      const res = await fetch(`${API_URL}/profile/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -491,7 +491,7 @@ const History = () => {
     const fetchHistory = async () => {
       setLoading(true);
       try {
-        const res = await fetch('${API_URL}/history', {
+        const res = await fetch(`${API_URL}/history`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         if (res.status === 401) { localStorage.removeItem('token'); navigate('/login', { replace: true }); return; }
@@ -674,7 +674,7 @@ function App() {
   // Fetch user email for avatar
   useEffect(() => {
     if (!isLoggedIn) { setUserEmail(''); return; }
-    fetch('${API_URL}/profile', {
+    fetch(`${API_URL}/profile`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then(res => res.ok ? res.json() : Promise.reject())
