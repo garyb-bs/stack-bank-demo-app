@@ -5,7 +5,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 const API_URL = process.env.NODE_ENV === 'production' 
   ? 'https://your-backend-api.workers.dev/api'  // Replace with your actual backend URL
-  : `${API_URL}`;
+  : 'http://localhost:3001/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
