@@ -4,7 +4,7 @@ import { Routes, Route, Navigate, useNavigate, NavLink } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute';
 
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://stackbank-api.gameovergary.workers.dev'  // Replace with your actual backend URL
+  ? 'https://stackbank-api.gameovergary.workers.dev/api'  // Replace with your actual backend URL
   : 'http://localhost:3001/api';
 
 const Login = () => {
@@ -300,7 +300,7 @@ const Transfer = ({ onSuccess }) => {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/bill`, {
+      const res = await fetch(`${API_URL}/paybill`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -397,7 +397,7 @@ const Profile = ({ userEmail }) => {
     setMessage(''); setError('');
     try {
       const res = await fetch(`${API_URL}/profile`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -426,8 +426,8 @@ const Profile = ({ userEmail }) => {
     if (!oldPassword || !newPassword) return;
     setMessage(''); setError('');
     try {
-      const res = await fetch(`${API_URL}/profile/password`, {
-        method: 'PUT',
+      const res = await fetch(`${API_URL}/change-password`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`
