@@ -209,6 +209,7 @@ const Dashboard = ({ refreshTrigger }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    setIsLoggedIn(false);
     navigate('/login');
   };
 
@@ -659,7 +660,7 @@ function ToastContainer({ toasts, onRemove }) {
 
 function App() {
   const [refresh, setRefresh] = useState(0);
-  const isLoggedIn = !!localStorage.getItem('token');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
   const [userEmail, setUserEmail] = useState('');
@@ -670,6 +671,29 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Listen for localStorage changes to update login state
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('token'));
+    };
+    
+    // Listen for storage events (when localStorage changes in other tabs)
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check localStorage periodically for same-tab changes
+    const interval = setInterval(() => {
+      const hasToken = !!localStorage.getItem('token');
+      if (hasToken !== isLoggedIn) {
+        setIsLoggedIn(hasToken);
+      }
+    }, 100);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [isLoggedIn]);
 
   // Fetch user email for avatar
   useEffect(() => {
@@ -688,6 +712,7 @@ function App() {
     let timeout;
     const logout = () => {
       localStorage.removeItem('token');
+      setIsLoggedIn(false);
       showToast('Session expired. Please log in again.', 'error');
       window.location.href = '/login';
     };

@@ -4,3 +4,4 @@ github-checkin.sh
 createRepo.sh
 .DS_Store]
 backend/
+playwright-tests/
