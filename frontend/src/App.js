@@ -176,7 +176,7 @@ const Register = () => {
   );
 };
 
-const Dashboard = ({ refreshTrigger }) => {
+const Dashboard = ({ refreshTrigger, setIsLoggedIn }) => {
   const [account, setAccount] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -803,7 +803,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard refreshTrigger={refresh} /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard refreshTrigger={refresh} setIsLoggedIn={setIsLoggedIn} /></ProtectedRoute>} />
           <Route path="/transfer" element={<ProtectedRoute><Transfer onSuccess={()=>setRefresh(r=>r+1)} /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile userEmail={userEmail} /></ProtectedRoute>} />
           <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
